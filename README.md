@@ -43,3 +43,20 @@ Para ejecutar el código, asegúrate de tener Python instalado en tu sistema y l
 
 ```bash
 python tight_binding.py
+```
+
+## Resultado
+La curva parabólica invertida refleja la relación de dispersión típica de un modelo de tight binding para una cadena monoatómica con un orbital por átomo.
+
+La gráfica muestra una banda de energía que es consistente con la relación de dispersión  *E(k) = E0 − 2tcos(ka)*.
+
+![tight_binding](tight_binding.png)
+
+### Revisión Final
+1. La gráfica tiene la forma parabólica invertida esperada.
+2. Verifica si el rango de energías corresponde a *−2t y 0*, ya que *E0* está ajustado a 0.
+3. Los valores de k están correctamente en el rango *−π/a* a *π/a*.
+4. Para asegurar que la implementación sea completamente correcta, verifica que:
+    - El parámetro t es positivo.
+    - a es la constante de red.
+    - E0 está correctamente ajustado a 0.
