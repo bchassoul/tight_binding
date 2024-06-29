@@ -1,52 +1,46 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Parámetros
-E_0 = 0.0  # Energía en el sitio
-t = 1.0    # Parámetro de hopping
-a = 1.0    # Constante de red
-N = 100    # Número de sitios
-k_points = 100  # Número de puntos k
+# Parámetros del modelo
+N = 100  # Número de sitios
+t = 1.0  # Parámetro de hopping
+E0 = 0.0  # Energía en los sitios
+a = 1.0  # Parámetro de red
 
-# Construir la matriz Hamiltoniana
-def construir_hamiltoniana(N, E_0, t):
-    H = np.zeros((N, N), dtype=complex)
+# Construir la matriz Hamiltoniana dependiente de k
+def construir_hamiltoniana(N, t, E0, k, a):
+    H = np.zeros((N, N), dtype=complex)  # Inicializar la matriz Hamiltoniana
     for i in range(N):
-        H[i, i] = E_0  # Energía en el sitio
-        if i > 0:
-            H[i, i - 1] = -t  # Hopping a la izquierda
-            H[i - 1, i] = -t  # Hopping a la derecha
-    H[0, N - 1] = -t  # Condición periódica de contorno (izquierda)
-    H[N - 1, 0] = -t  # Condición periódica de contorno (derecha)
+        H[i, i] = E0  # Energía en los sitios (diagonal)
+        if i < N-1:
+            H[i, i+1] = -t  # Hopping a la derecha
+            H[i+1, i] = -t  # Hopping a la izquierda
+    # Elementos que conectan el primer y último sitio (condiciones periódicas)
+    H[0, N-1] = -t * np.exp(1j * k * a)
+    H[N-1, 0] = -t * np.exp(-1j * k * a)
     return H
 
 # Calcular la energía en función de k
-def calcular_energia(E_0, t, a, N, k_points):
-    H = construir_hamiltoniana(N, E_0, t)
-    valores_k = np.linspace(-np.pi/a, np.pi/a, k_points)
-    energias = []
+def calcular_energias(N, t, E0, valores_k, a):
+    energias = []  # Lista para almacenar las energías
     for k in valores_k:
-        H_k = H.copy()
-        for i in range(N - 1):
-            H_k[i, i + 1] *= np.exp(1j * k * a)  # Factor de fase para hopping a la derecha
-            H_k[i + 1, i] *= np.exp(-1j * k * a)  # Factor de fase para hopping a la izquierda
-        H_k[0, N - 1] *= np.exp(1j * k * a)  # Factor de fase para la condición periódica (izquierda)
-        H_k[N - 1, 0] *= np.exp(-1j * k * a)  # Factor de fase para la condición periódica (derecha)
+        H = construir_hamiltoniana(N, t, E0, k, a)  # Construir Hamiltoniana para cada k
+        eigvals = np.linalg.eigvalsh(H)  # Diagonalizar la matriz Hamiltoniana para obtener las energías
+        energias.append(eigvals)
+    return np.array(energias)  # Convertir la lista a un array de numpy
 
-        # Diagonalizamos el Hamiltoniano para obtener los autovalores (energías)
-        autovalores = np.linalg.eigvalsh(H_k)
-        energias.append(autovalores[0])  # Solo la banda principal
-    return valores_k, np.array(energias)
+# Valores de k para los cuales se calcularán las energías
+valores_k = np.linspace(-np.pi/a, np.pi/a, 100)
 
-# Función principal
-valores_k, energias = calcular_energia(E_0, t, a, N, k_points)
+# Calcular las energías
+energias = calcular_energias(N, t, E0, valores_k, a)
 
-# Graficar la estructura de bandas
-plt.figure(figsize=(8, 6))
-plt.plot(valores_k, energias, label='Banda 1')
+# Graficar la estructura de bandas (solo la primera banda para claridad)
+plt.figure(figsize=(10, 6))
+plt.plot(valores_k, energias[:, 0], label='Banda 1')  # Graficar la primera banda de energía
 plt.xlabel('k')
 plt.ylabel('Energía')
 plt.title('Estructura de Bandas')
-plt.legend()
+plt.legend(loc='upper right', fontsize='small', frameon=True)
 plt.grid(True)
 plt.show()
