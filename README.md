@@ -8,25 +8,22 @@ El modelo de tight binding (o enlace fuerte) se utiliza para describir la estruc
 
 ### Conceptos Clave
 
-- **Parámetro de red \(a\)**: La distancia entre celdas unidad.
-- **Parámetro de hopping \(t\)**: La probabilidad de que un electrón salte de un orbital a su vecino.
-- **Combinación de orbitales atómicos**: Se utiliza la combinación lineal de orbitales atómicos para describir el estado del sistema.
+- **Parámetro de red : a :** La distancia entre celdas unidad.
+- **Parámetro de hopping : t :** La probabilidad de que un electrón salte de un orbital a su vecino.
+- **Combinación de orbitales atómicos :** Se utiliza la combinación lineal de orbitales atómicos para describir el estado del sistema.
 
 ### Ecuaciones Fundamentales
 
 El modelo se basa en las siguientes ecuaciones:
 
-```python
-# Combinación de orbitales atómicos
-|k> = (1 / sqrt(N)) * sum(exp(i * k * a) * |n>)
+![RK2](images/orbitales.png)
 
-# Donde N es el total de sitios y k es un número real en el espacio recíproco.
+Donde *N* es el total de sitios y *k* es un número real en el espacio recíproco.
 
-# La matriz hamiltoniana dependiente del parámetro k
-<n| H |n> = E0 = Ei - U
+La matriz hamiltoniana dependiente del parámetro k se diagonaliza para obtener la energía del sistema:
 
-<n ± 1| H |n> = -t
-```
+![RK2](images/hamiltoniana.png)
+
 
 ### Objetivos y Metas
 
@@ -34,13 +31,11 @@ El modelo se basa en las siguientes ecuaciones:
 2. Diagonalizar la matriz hamiltoniana para obtener la energía del sistema.
 3. Utilizar la función de autovalores para optimizar la diagonalización de la matriz.
 4. Implementar el algoritmo en Python.
-5. Considerar formas de paralelizar el algoritmo y evaluar la aceleración.
 
 ## Contenido del Repositorio
 
 - `tight_binding.py`: Código fuente en Python para la construcción y diagonalización de la matriz hamiltoniana.
 - `tight_binding.png`: Gráfico de la estructura de bandas generado a partir del modelo.
-- Documentación en PDF y gráficos adicionales.
 
 ## Uso
 
