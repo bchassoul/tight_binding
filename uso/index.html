@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Uso - Documentación de Tight Binding</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Documentación de Tight Binding</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">Uso</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../resultados/" class="nav-link">Resultados</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../resultados/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#uso" class="nav-link">Uso</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#tight_bindingpy" class="nav-link">tight_binding.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#tight_binding_parallelpy" class="nav-link">tight_binding_parallel.py</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="uso">Uso</h1>
+<p>Esta sección proporciona información sobre cómo utilizar los scripts proporcionados.</p>
+<h2 id="tight_bindingpy">tight_binding.py</h2>
+<p>Este script implementa el modelo de Tight Binding de manera serial.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">calcular_estructura_de_bandas</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">valores_k</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calcula la estructura de bandas para un modelo de tight-binding en 1D.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">        N (int): Número de orbitales atómicos.</span>
+<span class="sd">        a (float): Espaciado de la red.</span>
+<span class="sd">        t (float): Parámetro de hopping.</span>
+<span class="sd">        eps (float): Energía en el sitio.</span>
+<span class="sd">        valores_k (np.ndarray): Array de valores de k.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        lista de np.ndarray: Lista de arrays de autovalores para cada valor de k.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">autovalores</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">valores_k</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+        <span class="c1"># Término de energía en el sitio</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span>
+
+        <span class="c1"># Términos de hopping con condiciones de contorno periódicas</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+            <span class="n">H</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+
+        <span class="n">evals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">autovalores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evals</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">autovalores</span>
+
+<span class="k">def</span> <span class="nf">seleccionar_autovalores_aleatorios</span><span class="p">(</span><span class="n">autovalores</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selecciona un conjunto arbitrario de autovalores de la estructura de bandas calculada.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">        autovalores (lista de np.ndarray): Lista de arrays de autovalores para cada valor de k.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        np.ndarray: Array de autovalores seleccionados.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indice_aleatorio</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">autovalores</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">autovalores</span><span class="p">[</span><span class="n">indice_aleatorio</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">aplicar_condiciones_de_contorno_periodicas</span><span class="p">(</span><span class="n">autovalores</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Aplica condiciones de contorno periódicas de manera que E(-k) = E(k).</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">        autovalores (np.ndarray): Array de autovalores.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        np.ndarray: Array de autovalores con condiciones de contorno periódicas aplicadas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">autovalores</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">autovalores</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">calcular_banda_analitica</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">eps</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">valores_k</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">graficar_estructura_de_bandas</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">banda_numerica</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="n">banda_analitica</span> <span class="o">=</span> <span class="n">calcular_banda_analitica</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">banda_numerica</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Autovalores de H(k)&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">banda_analitica</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$E(k) = \epsilon_0 - 2t\cos(ka)$&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="n">eps</span><span class="o">-</span><span class="mf">2.</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps</span><span class="o">+</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="o">+</span><span class="mf">2.</span><span class="o">*</span><span class="n">t</span><span class="p">])</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s1">&#39;$\epsilon_0-2t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0-t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0+t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0+2t$&#39;</span><span class="p">])</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;E(k)&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Modelo de tight-binding con cadena atómica de N=</span><span class="si">{</span><span class="n">N</span><span class="si">}</span><span class="s1"> celdas&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;tight_binding.png&#39;</span><span class="p">)</span>
+
+<span class="c1"># Parámetros</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>      <span class="c1"># Número de orbitales atómicos</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>       <span class="c1"># Espaciado de la red</span>
+<span class="n">t</span> <span class="o">=</span> <span class="mf">0.5</span>     <span class="c1"># Parámetro de hopping</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="mf">0.0</span>   <span class="c1"># Energía en el sitio</span>
+<span class="n">max_iterations</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N</span>
+<span class="n">valores_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">max_iterations</span><span class="p">)</span>  <span class="c1"># Array de valores k</span>
+
+<span class="c1"># Calcular la estructura de bandas</span>
+<span class="n">autovalores</span> <span class="o">=</span> <span class="n">calcular_estructura_de_bandas</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">valores_k</span><span class="p">)</span>
+
+<span class="c1"># Seleccionar un conjunto arbitrario de autovalores para graficar</span>
+<span class="n">autovalores_seleccionados</span> <span class="o">=</span> <span class="n">seleccionar_autovalores_aleatorios</span><span class="p">(</span><span class="n">autovalores</span><span class="p">)</span>
+
+<span class="c1"># Aplicar las condiciones de contorno periódicas</span>
+<span class="n">autovalores_con_ccp</span> <span class="o">=</span> <span class="n">aplicar_condiciones_de_contorno_periodicas</span><span class="p">(</span><span class="n">autovalores_seleccionados</span><span class="p">)</span>
+
+<span class="c1"># Graficar la estructura de bandas</span>
+<span class="n">graficar_estructura_de_bandas</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">autovalores_con_ccp</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="tight_binding_parallelpy">tight_binding_parallel.py</h2>
+<p>Este script implementa el modelo de Tight Binding de manera paralela utilizando multiprocessing.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span><span class="p">,</span> <span class="n">cpu_count</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">calcular_estructura_de_bandas_para_k</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span> <span class="o">=</span> <span class="n">args</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+
+    <span class="c1"># Término de energía en el sitio</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">eps</span>
+
+    <span class="c1"># Términos de hopping con condiciones de contorno periódicas</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">H</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">H</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">k</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+
+    <span class="n">evals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">evals</span>
+
+<span class="k">def</span> <span class="nf">calcular_estructura_de_bandas</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">valores_k</span><span class="p">,</span> <span class="n">num_cores</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calcula la estructura de bandas para un modelo de tight-binding en 1D.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">        N (int): Número de orbitales atómicos.</span>
+<span class="sd">        a (float): Espaciado de la red.</span>
+<span class="sd">        t (float): Parámetro de hopping.</span>
+<span class="sd">        eps (float): Energía en el sitio.</span>
+<span class="sd">        valores_k (np.ndarray): Array de valores de k.</span>
+<span class="sd">        num_cores (int): Número de núcleos a utilizar para la paralelización.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        lista de np.ndarray: Lista de arrays de autovalores para cada valor de k.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">Pool</span><span class="p">(</span><span class="n">num_cores</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
+        <span class="n">autovalores</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">calcular_estructura_de_bandas_para_k</span><span class="p">,</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">valores_k</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">autovalores</span>
+
+<span class="k">def</span> <span class="nf">seleccionar_autovalores_aleatorios</span><span class="p">(</span><span class="n">autovalores</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selecciona un conjunto arbitrario de autovalores de la estructura de bandas calculada.</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">        autovalores (lista de np.ndarray): Lista de arrays de autovalores para cada valor de k.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        np.ndarray: Array de autovalores seleccionados.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">indice_aleatorio</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">autovalores</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">autovalores</span><span class="p">[</span><span class="n">indice_aleatorio</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">aplicar_condiciones_de_contorno_periodicas</span><span class="p">(</span><span class="n">autovalores</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Aplica condiciones de contorno periódicas de manera que E(-k) = E(k).</span>
+
+<span class="sd">    Parámetros:</span>
+<span class="sd">        autovalores (np.ndarray): Array de autovalores.</span>
+
+<span class="sd">    Retorna:</span>
+<span class="sd">        np.ndarray: Array de autovalores con condiciones de contorno periódicas aplicadas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">autovalores</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">autovalores</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">calcular_banda_analitica</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">eps</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">valores_k</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">graficar_estructura_de_bandas</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">banda_numerica</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">num_cores</span><span class="p">):</span>
+    <span class="n">banda_analitica</span> <span class="o">=</span> <span class="n">calcular_banda_analitica</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">banda_numerica</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Autovalores de H(k)&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">banda_analitica</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$E(k) = \epsilon_0 - 2t\cos(ka)$&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([</span><span class="n">eps</span><span class="o">-</span><span class="mf">2.</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="o">-</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">eps</span><span class="o">+</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="o">+</span><span class="mf">2.</span><span class="o">*</span><span class="n">t</span><span class="p">])</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="s1">&#39;$\epsilon_0-2t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0-t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0+t$&#39;</span><span class="p">,</span> <span class="s1">&#39;$\epsilon_0+2t$&#39;</span><span class="p">])</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;E(k)&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Modelo de tight-binding con cadena atómica de N=</span><span class="si">{</span><span class="n">N</span><span class="si">}</span><span class="s1"> celdas (Cores: </span><span class="si">{</span><span class="n">num_cores</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">axs</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;tight_binding_cores_</span><span class="si">{</span><span class="n">num_cores</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Definir los argumentos de línea de comandos</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Modelo de tight-binding en 1D&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--cores&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">cpu_count</span><span class="p">(),</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Número de núcleos a utilizar&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">num_cores</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">cores</span>
+
+    <span class="c1"># Parámetros</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="mi">500</span>     <span class="c1"># Número de orbitales atómicos</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>       <span class="c1"># Espaciado de la red</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="mf">0.5</span>     <span class="c1"># Parámetro de hopping</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.0</span>   <span class="c1"># Energía en el sitio</span>
+    <span class="n">max_iterations</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">N</span>
+    <span class="n">valores_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">max_iterations</span><span class="p">)</span>  <span class="c1"># Array de valores k</span>
+
+    <span class="c1"># Medir el tiempo de ejecución</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="c1"># Calcular la estructura de bandas</span>
+    <span class="n">autovalores</span> <span class="o">=</span> <span class="n">calcular_estructura_de_bandas</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">valores_k</span><span class="p">,</span> <span class="n">num_cores</span><span class="p">)</span>
+
+    <span class="c1"># Seleccionar un conjunto arbitrario de autovalores para graficar</span>
+    <span class="n">autovalores_seleccionados</span> <span class="o">=</span> <span class="n">seleccionar_autovalores_aleatorios</span><span class="p">(</span><span class="n">autovalores</span><span class="p">)</span>
+
+    <span class="c1"># Aplicar las condiciones de contorno periódicas</span>
+    <span class="n">autovalores_con_ccp</span> <span class="o">=</span> <span class="n">aplicar_condiciones_de_contorno_periodicas</span><span class="p">(</span><span class="n">autovalores_seleccionados</span><span class="p">)</span>
+
+    <span class="c1"># Graficar la estructura de bandas</span>
+    <span class="n">graficar_estructura_de_bandas</span><span class="p">(</span><span class="n">valores_k</span><span class="p">,</span> <span class="n">autovalores_con_ccp</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">num_cores</span><span class="p">)</span>
+
+    <span class="c1"># Calcular y mostrar el tiempo de ejecución</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">execution_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tiempo de ejecución: </span><span class="si">{</span><span class="n">execution_time</span><span class="si">}</span><span class="s1"> s&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+<p>Después de clonar el repositorio, puedes ejecutar los scripts de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>tight_binding.py
+python<span class="w"> </span>tight_binding_parallel.py<span class="w"> </span>--cores<span class="w"> </span><span class="m">4</span>
+</code></pre></div></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
