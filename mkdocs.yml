@@ -1,0 +1,19 @@
+site_name: 'Documentación de Tight Binding'
+
+nav:
+  - Inicio: index.md
+  - Uso: uso.md
+  - Resultados: resultados.md
+
+markdown_extensions:
+  - pymdownx.superfences
+
+plugins:
+  - search
+  - include-markdown:
+      encoding: utf-8
+      preserve_includer_indent: true
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
